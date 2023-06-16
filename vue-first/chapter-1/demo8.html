@@ -1,0 +1,62 @@
+<!--计算属性：computed-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+    <!--    1.导入vue.js的包-->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.5.21/dist/vue.min.js"></script>
+</head>
+<body>
+
+
+<!--这里是视图层：view层-->
+<div id="app">
+    <p>currentTime1:  {{currentTime1()}}</p>
+    <p>currentTime2:  {{currentTime2}}</p>  <!--上面那个通过方法来调用，这个是计算属性可通过属性直接来调-->
+
+
+</div>
+
+
+
+
+<!--2.创建vue对象-->
+<script>
+    var vm=new Vue({
+        el:"#app",
+        data :{
+            message:"hello,mako!!"
+        },
+        methods:{   //方法必须定义在 Vue 实例的 methods 对象中
+            currentTime1: function () {
+                return Date.now();  //返回当前时间戳的方法。
+            }
+
+        },
+        computed:{  //计算属性：methods与computed一模一样。前提是methods与computed中的方法名不能重名(但是经实测现在浏览器并不会报错了)。
+            //重名之后只会调用methods的方法
+            currentTime2: function () {
+                this.message;
+                return Date.now();  //返回当前时间戳的方法。
+            }
+
+
+
+
+        //    这里之所以说计算属性，重点在于其是个属性：比如去浏览器审查：
+            //    vm.currentTime1()是可以输出的；但是vm.currentTime2()就会报错：vm.currentTime2 is not a function不是方法，因其是个属性
+        //    此时不要输入vm.currentTime2()，而是直接vm.currentTime2就可以正常输出。（计算出的结果缓存在内存中）
+        //    在审查console窗口，vm.currentTime2的结果多次打印发现结果是不变的（缓存）。但是一旦做了一些操作比如vm.message="123",总之就是vm.currentTime2属性中的方法的一些数据变了，
+        //     vm.currentTime2的打印结果就会变化。（即当中间的数据刷新后，计算属性就会重新计算，和缓存一样。就看做缓存吧）
+        //，计算属性的主、要特性就是为了将不经常变化的计算结果进行缓存，以节约我们的系统开销;
+
+        }
+    });
+
+</script>
+
+
+</body>
+</html>

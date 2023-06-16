@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:v-bind="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <!--    1.导入vue.js的包-->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.5.21/dist/vue.min.js"></script>
+</head>
+<body>
+
+
+<!--这里是视图层：view层-->
+<div id="app">
+    <!--
+=== 三个等号在 JS 中表示绝对等于（就是数据与类型都要相等）
+-->
+    <h1 v-if="type==='A'">A</h1>
+    <h1 v-else-if="type==='B'">B</h1>
+    <h1 v-else>C</h1>
+</div>
+
+
+
+
+<!--2.创建vue对象-->
+<script>
+    var vm=new Vue({
+        el:"#app",
+        data:{
+            type: 'A'
+        }
+    });
+
+</script>
+
+
+</body>
+</html>

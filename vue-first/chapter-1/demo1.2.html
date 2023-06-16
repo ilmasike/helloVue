@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:v-bind="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <!--    1.导入vue.js的包-->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.5.21/dist/vue.min.js"></script>
+</head>
+<body>
+
+
+<!--这里是视图层：view层-->
+<div id="app">
+<!--    {{message}}-->
+    <!--如果要将模型数据绑定在html属性中则使用 v-bind 指令,此时title中显示的是模型数据-->
+    <h1 v-bind:title="message">鼠标悬停几秒钟查看此处动态绑定的提示信息！</h1>
+    <!-- v-bind 指令的简写形式： 冒号（:） -->
+    <h1 :title="message">我是标题</h1>
+</div>
+
+
+
+
+<!--2.创建vue对象-->
+<script>
+    var vm=new Vue({
+        el:"#app",     //绑定标签：绑定了选择器为app的，与过去js.documentById很像，，，只是这里是vue 来选中#app
+        //这里是model业务模型层：
+        data:{ //以前data通常是从java后端拿到的。现在前端自己就可以模拟，自己设置data。原来是前端很依赖后台数据：
+            // 要么在 {{message}}写死，现在要改变数据，也不用再改变 {{message}}模板，即对应的view层，。而是直接把数据放到data这里即可
+            message:"hello_vue!!"
+        }
+    });
+
+//    对于MVVM，这里先理解下什么是vm对象：是一个监视，可以看数据变化，根据数据变化，立马响应前端
+</script>
+
+
+</body>
+</html>

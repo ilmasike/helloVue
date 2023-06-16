@@ -1,0 +1,82 @@
+<!--                 Axios:为了解决通信问题
+Axios 是一个开源的可以用在浏览器端和 NodeJS 的异步通信框架，她的主要作用就是实现 AJAX 异
+步通信，其功能特点如下：
+
+通信交给Axios: 就一句话： axios.get(。。。。
+
+
+这个页面执行流程：1.本地伪造一些json数据，
+    2.mounted(){ }钩子函数里面通过axios.get()或者Ajax(),只是jQuery的Ajax麻烦，视图层<div>要频繁操作dom
+    而axios直接data(){
+      return{info}
+      }
+      info 里去返回数据，什么样的格式，就对照着返回就完了。
+    3.
+
+-->
+<!DOCTYPE html>
+<html lang="en" xmlns:v-bind="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>狂神说Java</title>
+    <!-- 1.导入vue.js的包,引入 axios 文件-->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.5.21/dist/vue.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+    <!--v-clock: 解决闪烁问题-->
+    <style>
+        [v-clock]{
+            display: none;    /*让其未加载之前白屏  */
+        }
+
+    </style>
+
+
+</head>
+
+
+
+
+
+<body>
+
+<div id="vue" v-clock>
+    <div>
+        {{info.address}}   <!--看看data中的info是否拿到了值-->
+    </div>
+
+    <a v-bind:href="info.url">点我，跳转到data.json的url界面</a>
+
+
+</div>
+
+
+
+<script type="text/javascript">
+    var vm = new Vue({
+        el: '#vue',
+        data(){   //注意这里的data不是以前的那种属性data，以前的data是vm固有的一个属性。
+            // 而data()是data方法，可以接收一些数据:接收axios的数据
+            return {
+                //请求的返回参数格式，必须和json字符串一样。（这里格式要与data.json文件相匹配,有的内容可以不写，但是打算写的就不要写错）
+                info: {    //注意：这里data(){}应该没有意义，直接data:{}就可以，但里面一定有一个原始参数info，然后axios获取到的数据绑定到info上
+                    name: null,
+                    address: {
+                        country: null,
+                        city: null,
+                        street: null
+                    },
+                    url: null
+                }
+            }
+        },
+
+        mounted(){  //钩子函数：是链式编程(即点点点)，可在程序执行时，插入到生命周期中的一点去执行。加载Ajax的就是在mounted()
+            axios.get('../data.json').then(response=>(this.info=response.data))   //this.info=response.data就是把拿到的json字符串赋值给info，而info要被return到data数据中           //类似：  $.ajax或  $.get()
+            // 使用 axios 框架的 get 方法请求 AJAX 并自动将数据封装进了 Vue 实例的数据对象中
+            //在浏览器运行，发现Network就是有xhr（即我们不用Ajax的话，通过这种方式也行）
+        }
+    });
+</script>
+</body>
+</html>

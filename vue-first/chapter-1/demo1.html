@@ -1,0 +1,49 @@
+<!--对于MVVM，这里先理解下什么是vm对象：是一个监视，可以看数据变化，根据数据变化，立马响应前端
+
+双向绑定就是  你们前端数据改变 你们data中的数据也会改变同样的，你们data中的数据改变了  前端页面中的数据也同样会发生改变
+而且，这个过程是不需要刷新（或操作dom对象等进行修改等）的（我们正常写的页面，改变后通常刷新后才能看到）
+前端资源大大节省，不用操作dom对象了(但是达到了操作dom的效果)：这就叫虚拟dom
+
+以后前端再也不用写数据，无论多复杂的前端，就是标签+ {{message}} ：     <div id="app" >{{message}}</div>
+
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <!--    1.导入vue.js的包-->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.5.21/dist/vue.min.js"></script>
+</head>
+<body>
+
+<h1>mako love me!!</h1>    <!--我们正常写的页面，改变后通常刷新（或操作dom对象等进行修改等）后才能看到）-->
+
+<!--这里是视图层：view层-->
+<div id="app" >
+<!--    想拿到vue对象赋予的数据：-->
+    {{message}}       <!--这行暂理解为：虚拟dom-->  <!--双向绑定:改变后不需要刷新（不需操作dom对象而实现相同效果）,只需要在前端：vm.message="shdkfhkkjjk "-->
+</div>
+
+
+
+
+<!--2.创建vue对象-->
+<script>
+    var vm=new Vue({
+        el:"#app",     //绑定标签：绑定了选择器为app的，与过去js.documentById很像，，，只是这里是vue 来选中#app
+        //这里是model业务模型层：
+        data:{ //以前data通常是从java后端拿到的。现在前端自己就可以模拟，自己设置data。原来是前端很依赖后台数据：
+            // 要么在 {{message}}写死，现在要改变数据，也不用再改变 {{message}}模板，即对应的view层，。而是直接把数据放到data这里即可
+            message:"hello_vue!!"
+        }
+    });
+
+//    对于MVVM，这里先理解下什么是vm对象：是一个监视，可以看数据变化，根据数据变化，立马响应前端
+</script>
+
+
+
+
+</body>
+</html>

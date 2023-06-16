@@ -1,0 +1,122 @@
+<!--
+插槽：
+
+1.思路整理：
+var vm=new Vue有数据，包括：title、todoItems
+两个组件就是用来获取数据的（titlehhhhh，item），此时还未绑定title、todoItems。
+而经过v-bind:titlehhhhh="title"、v-for="item in todoItems" v-bind:item="item"后，两个组件获取的就是date中的title、todoItems的数据了
+再通过：slot="我是slot我想绑定todo-title" 这一步，把数据放到对应插槽的位置。
+这样，既拿到了data数据，同时把数据放到正确的位置。
+
+
+2./*自定义事件(自定义事件的名族是不是不能有大写？)：（前端，vue实例，组件，三大模块）
+        * 数据项在 Vue 的实例中，但删除操作要在组件中完成，那么组件如何才能删除Vue 实例中的数据呢？
+        * 此时就涉及到参数传递与事件分发了，Vue 为我们提供了自定义事件的功能很好的帮助我们解决了这个问题；
+        * 使用 this.$emit('自定义事件名', 参数)，操作过程如下:
+
+        this.$emit将事件分发回前端，前端v–on:remove再将事件给removeItems(处理)
+        bind:绑定前端与vue的数据。props:绑定前端与组件的数据。
+        而:key则是将index返回到vue实例
+
+        * */
+
+-->
+
+
+<!DOCTYPE html>
+<html lang="en" xmlns:v-bind="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <!--    1.导入vue.js的包-->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.5.21/dist/vue.min.js"></script>
+</head>
+<body>
+
+
+
+
+<!--1.这里是视图层：view层-->
+
+<div id="app">
+    <!--    <p>mako列表</p>-->
+    <!--    <ul>-->
+    <!--        <li>木绿葵</li>-->
+    <!--        <li>木绿茜</li>-->
+    <!--        <li>则卷千兵卫</li>-->
+    <!--        <li>阿拉蕾</li>-->
+    <!--        <li>山吹见取</li>-->
+    <!--        <li>空豆太郎</li>-->
+    <!--    </ul>-->
+
+    <!--上面的不需要了， 直接用组件+插槽即可：-->
+    <todo>   <!--代表todo 组件。此组件中有俩插槽，可以插入别人的数据-->
+        <todo-title slot="我是slot我想绑定todo-title" v-bind:titlehhhhh="title"></todo-title>  <!--slot标签的name，可以随便取，然后这里把插件与slot标签的name绑定即可-->
+        <todo-items slot="我是slot我想绑定todo-items" v-for="(item,index) in todoItems"
+                    v-bind:item="item" v-bind:index="index"
+                    v-on:diyshijian="removeItems()" v-bind:key="index"></todo-items>
+        <!--这里注意 v-bind:item="item"，前一个item是props: ['item'],中的。后者是-for=""遍历出来的每一项 -->
+        <!--增加了 v-on:remove="removeTodoItems(index)" 自定义事件，该事件会调用 Vue 实例中定义的名为 removeTodoItems 的方法-->
+    </todo>
+</div>
+
+<!--2.创建vue对象-->
+<!--slot：插槽，用来插入数据-->
+<script>
+    Vue.component("todo",{
+        template:
+            '<div>' +
+            '<slot name="我是slot我想绑定todo-title"></slot>' +   /*这里是插槽*/     //slot里面的name是他自己的名字，可以和组件名不一样
+            '<ul>' +
+            '<slot name="我是slot我想绑定todo-items"></slot>' +   /*这里是插槽*/
+            '</ul>'+
+            '</div>'
+    });
+    //有了插槽，我们还需要数据，多写几个组件：
+    Vue.component("todo-title",{
+        props: ['titlehhhhh'],
+        template: '<div>{{titlehhhhh}}</div>'    /*用来填满插槽的数据*/
+    });
+
+    Vue.component("todo-items",{
+        props: ['item','index'],
+        //这里发现： v-on:click事件只能绑定当前组件内的方法remove，而不是别的组件的我们需要的removeItems方法
+        //所以我们应该想方设法的在方法remove 中  调用到  removeItems方法。
+
+        /*，数据项在 Vue 的实例中，但删除操作要在组件中完成，那么组件如何才能删除
+Vue 实例中的数据呢？此时就涉及到参数传递与事件分发了，Vue 为我们提供了自定义事件的功能很好
+的帮助我们解决了这个问题；使用 this.$emit('自定义事件名', 参数)，操作过程如下:
+        * */
+        template: '<li>下标为：{{index+1}}----{{item}}<button v-on:click="remove1">删除</button></li> ',    /*用来填满插槽的数据*/
+        methods:{
+            remove1:function () {
+                console.log("sdf");
+                this.$emit('diyshijian');
+                // 这里的 diyShijian 是自定义事件的名称，需要在 HTML 中使用 v-on:diyShijian方式指派
+            }
+        },
+    });
+
+
+    var vm=new Vue({
+        el:"#app",
+        data : {
+            title:"mako列表",
+            todoItems:['木绿茜','则卷千兵卫','阿拉蕾','山吹见取','空豆太郎']
+
+        },
+        methods:{
+            removeItems:function (index) {  // 该方法可以被模板中自定义事件触发
+                console.log("删除了"+this.todoItems[index]+"!!")
+                this.todoItems.splice(index,1);//我们要的是一次删除一个元素。这里代码：只要执行此方法，就会删除当前元素
+                //splice()可以传3个参数：比如splice(2,3，'设法','水电费')说明从下标为2的元素开始，删除当前和后两个。然后后面添加上'设法','水电费'
+
+            }
+
+        }
+
+    });
+
+</script>
+</body>
+</html>

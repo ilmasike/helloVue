@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <!--    1.导入vue.js的包-->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.5.21/dist/vue.min.js"></script>
+</head>
+<body>
+
+
+<!--这里是视图层：view层-->
+<div id="app">
+<!--    <li v-for="item  in items">        -->
+    <li v-for="(item,index) in items">   <!--从items中遍历出的每一项，称之为item-->
+        {{item.message}}---->{{index}}}
+    </li>
+
+</div>
+
+<!--2.创建vue对象-->
+<script>
+    var vm=new Vue({
+        el:"#app",
+        data:{
+            items:[  //数组items里面存的是对象
+                {message:'户真正靠'},
+                {message:'离开谁发个'},
+                {message:'安娜艾莎'}
+            ]
+        }
+    });
+
+</script>
+</body>
+</html>

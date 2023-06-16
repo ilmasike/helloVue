@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:v-on="http://www.w3.org/1999/xhtml">
+<head>
+    <!--    v-on 监听事件：-->
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <!--    1.导入vue.js的包-->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.5.21/dist/vue.min.js"></script>
+</head>
+<body>
+
+
+<!--这里是视图层：view层-->
+<div id="app">
+    <!--
+在这里我们使用了 v-on 绑定了 click 事件并指定了名为 sayHi 的方法
+-->
+    <button v-on:click="sayHi">click me</button>       <!--按照以前的写法： <button onclick="sayHi">click me</button>          -->
+    <!-- v-on 指令的简写形式 @ -->
+    <button @click="sayHi">点我</button>
+</div>
+
+<!--2.创建vue对象-->
+<script>
+    var vm=new Vue({
+        el:"#app",
+        data: {
+            message: "mako今天嫁给我！！"
+        },
+        methods:{   //方法必须定义在 Vue 实例的 methods 对象中
+            sayHi: function () {
+                alert(this.message)
+            }
+
+
+
+        }
+    });
+
+</script>
+</body>
+</html>
